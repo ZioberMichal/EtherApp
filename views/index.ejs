@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Parity</title>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<h3>Parity - Local server properties</h3>
+<div class="row">
+    <div class="col-md-4">Name</div>
+    <div class="col-md-4">Value</div>
+</div>
+<div class="row">
+    <div class="col-md-4">Version</div>
+    <div class="col-md-4"><%= version %></div>
+</div>
+<div class="row">
+    <div class="col-md-4">Number of blocks</div>
+    <div class="col-md-4"><%= blockNumber %></div>
+</div>
+<div class="row">
+    <div class="col-md-4">Gas price</div>
+    <div class="col-md-4"><%= gasPrice %></div>
+</div>
+<div class="row">
+    <div class="col-md-4">Block #</div>
+    <div class="col-md-4"><%= blockNr %></div>
+</div>
+<% for (var key in blockDataKeys) { %>
+<div class="row">
+    <div class="col-md-2">block.<%= blockDataKeys[key] %></div>
+    <div class="col-md-8"><%= blockData[blockDataKeys[key]] %></div>
+</div>
+<% } %>
+<form action="/" method="post">
+    <input name="blockNr" type="text" placeholder="Block number" required>
+    <input type="submit" value="See">
+</form>
+<h3>MetaMask - properties</h3>
+<div class="row">
+    <div class="col-md-4">Accounts</div>
+    <div id="accountsValue" class="col-md-4"></div>
+</div>
+<div class="row">
+    <div class="col-md-4">Default account</div>
+    <div id="defaultAccountValue" class="col-md-4"></div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script>
+    window.addEventListener('load', async() => {
+        // Modern dapp browsers...
+        if (window.ethereum) {
+            window.web3 = new Web3(ethereum);
+            try {
+                // Request account access if needed
+                await ethereum.enable();
+                web3.eth.getAccounts(function (error, result) {
+                    $('#accountsValue').html(result);
+                });
+
+                $('#defaultAccountValue').html(web3.eth.defaultAccount);
+            } catch (error) {
+                // User denied account access...
+            }
+        }
+        // Legacy dapp browsers...
+        else if (window.web3) {
+            window.web3 = new Web3(web3.currentProvider);
+        }
+        // Non-dapp browsers...
+        else {
+            console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+        }
+    });
+</script>
+</body>
+</html>
