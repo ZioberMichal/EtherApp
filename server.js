@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-var deferred = require('deferred');
 const Web3 = require('web3');
 
 if (typeof web3 !== 'undefined') {
@@ -40,6 +39,7 @@ var handler = function (blockNr, res) {
         console.log("getBlock->Result: " + result);
         data.blockData = result;
         data.blockDataKeys = result ? Object.keys(result) : [];
+        data.blockNr = result.number;
     });
 
     data.blockNr = blockNr;
@@ -54,6 +54,10 @@ var handler = function (blockNr, res) {
 
 app.get('/', function (req, res) {
     handler(1, res);
+});
+
+app.get('/blocks', function (req, res) {
+    handler(req.query.id, res);
 });
 
 app.post('/', function (req, res) {

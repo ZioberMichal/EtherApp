@@ -50,6 +50,9 @@
     <div class="col-md-8"><%= blockData[blockDataKeys[key]] %></div>
 </div>
 <% } %>
+<div class="row">
+    <div class="col-md-4"><a href="/blocks?id=<%= blockNr - 1 %>">Get previous <%= blockNr - 1 %>#</a></div>
+</div>
 <form action="/" method="post">
     <input name="blockNr" type="text" placeholder="Block number" required>
     <input type="submit" value="See">
