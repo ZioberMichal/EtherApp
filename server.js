@@ -19,6 +19,7 @@ app.set('view engine', 'ejs');
 
 var handler = function (blockNr, res) {
     var data = {};
+    data.blockTransactions = [];
     web3.eth.getBlockNumber(function (error, result) {
         console.log("getBlockNumber->Error: " + error);
         console.log("getBlockNumber->Result: " + result);
@@ -40,10 +41,21 @@ var handler = function (blockNr, res) {
         data.blockData = result;
         web3.eth.getBlockTransactionCount(result.hash, function (error, numberOfTransactions) {
             console.log("getBlockTransactionCount->Result: " + numberOfTransactions);
-            console.log(arguments);
             data.blockData.numberOfTransactions = numberOfTransactions;
             data.blockDataKeys = data.blockData ? Object.keys(data.blockData) : [];
         });
+        if (result.transactions && result.transactions.length > 0) {
+            for (var i = 0; i < result.transactions.length; i++) {
+                web3.eth.getTransaction(result.transactions[i], function (error, result) {
+                    console.log("getTransaction->Error: " + error);
+                    console.log("getTransaction->Result: " + JSON.stringify(result));
+                    data.blockTransactions.push({
+                        keys : Object.keys(result),
+                        data : result
+                    });
+                });
+            }
+        }
 
         data.blockNr = result.number;
     });

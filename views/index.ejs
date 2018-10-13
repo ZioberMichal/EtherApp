@@ -57,6 +57,18 @@
     <input name="blockNr" type="text" placeholder="Block number" required>
     <input type="submit" value="See">
 </form>
+<h3>Transactions - <%= blockTransactions.length %></h3>
+<% for (var t in blockTransactions) { %>
+    <div class="row">
+        <div class="col-md-2">#<%= t %></div>
+    </div>
+    <% for (var transKey in blockTransactions[t].keys) { %>
+        <div class="row">
+            <div class="col-md-2">transaction.<%= blockTransactions[t].keys[transKey] %></div>
+            <div class="col-md-8"><%= blockTransactions[t].data[blockTransactions[t].keys[transKey]] %></div>
+        </div>
+    <% } %>
+<% } %>
 <h3>MetaMask - properties</h3>
 <div class="row">
     <div class="col-md-4">Accounts</div>
