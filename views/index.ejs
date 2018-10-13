@@ -63,6 +63,19 @@
     <div class="col-md-4">Default account</div>
     <div id="defaultAccountValue" class="col-md-4"></div>
 </div>
+<h3>MetaMask - properties</h3>
+<div class="row">
+    <div class="col-md-4">Ethereum version</div>
+    <div id="ethereumVersion" class="col-md-4"></div>
+</div>
+<div class="row">
+    <div class="col-md-4">API version</div>
+    <div id="apiVersion" class="col-md-4"></div>
+</div>
+<div class="row">
+    <div class="col-md-4">Network version</div>
+    <div id="networkVersion" class="col-md-4"></div>
+</div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -75,29 +88,14 @@
 <script>
     window.addEventListener('load', async() => {
         // Modern dapp browsers...
-        if (window.ethereum) {
-            window.web3 = new Web3(ethereum);
-            try {
-                // Request account access if needed
-                await ethereum.enable();
-                web3.eth.getAccounts(function (error, result) {
-                    $('#accountsValue').html(result);
-                });
-
-                $('#defaultAccountValue').html(web3.eth.defaultAccount);
-            } catch (error) {
-                // User denied account access...
-            }
-        }
-        // Legacy dapp browsers...
-        else if (window.web3) {
-            window.web3 = new Web3(web3.currentProvider);
-        }
-        // Non-dapp browsers...
-        else {
-            console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
-        }
+        var client = new Client();
+        client.init();
+        client.showProperties();
+        client.showVersions();
+        //client.sendTx();
+        client.getBalance();
     });
 </script>
+<script src="js/client.js"></script>
 </body>
 </html>

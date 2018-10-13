@@ -39,7 +39,7 @@ var handler = function (blockNr, res) {
         console.log("getBlock->Error: " + error);
         console.log("getBlock->Result: " + result);
         data.blockData = result;
-        data.blockDataKeys = Object.keys(result);
+        data.blockDataKeys = result ? Object.keys(result) : [];
     });
 
     data.blockNr = blockNr;
