@@ -38,7 +38,13 @@ var handler = function (blockNr, res) {
         console.log("getBlock->Error: " + error);
         console.log("getBlock->Result: " + result);
         data.blockData = result;
-        data.blockDataKeys = result ? Object.keys(result) : [];
+        web3.eth.getBlockTransactionCount(result.hash, function (error, numberOfTransactions) {
+            console.log("getBlockTransactionCount->Result: " + numberOfTransactions);
+            console.log(arguments);
+            data.blockData.numberOfTransactions = numberOfTransactions;
+            data.blockDataKeys = data.blockData ? Object.keys(data.blockData) : [];
+        });
+
         data.blockNr = result.number;
     });
 
@@ -48,8 +54,6 @@ var handler = function (blockNr, res) {
     setTimeout(function () {
         res.render('index', data);
     }, 1000);
-
-    console.log(Object.keys(web3.eth));
 };
 
 app.get('/', function (req, res) {
