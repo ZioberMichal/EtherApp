@@ -8,7 +8,7 @@ if (typeof web3 !== 'undefined') {
 } else {
     var url = "http://localhost:8545";
     // set the provider you want from Web3.providers
-    console.log(`Connect to ${url} ...`);
+    console.log(`Connected to ${url} ...`);
     web3 = new Web3(new Web3.providers.HttpProvider(url));
 }
 const app = express();
@@ -81,5 +81,5 @@ app.post('/', function (req, res) {
 });
 
 app.listen(3000, function () {
-    console.log('Port 3000!')
+    console.log('Node.js server is run on http://localhost:3000/ !')
 });
